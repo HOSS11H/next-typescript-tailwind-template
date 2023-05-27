@@ -7,13 +7,23 @@ let languages = new Negotiator({ headers }).languages();
 let locales = ['en-US', 'en', 'ar'];
 let defaultLocale = 'en-US';
 
+const PUBLIC_FILE = /\.(.*)$/
+
 // Get the preferred locale, similar to above or using a library
-function getLocale(request) { 
+function getLocale(request) {
     return match(languages, locales, defaultLocale);
- }
+}
 
 
 export function middleware(request) {
+    // Skip next internal and image requests
+    if (
+        request.nextUrl.pathname.startsWith('/_next') ||
+        request.nextUrl.pathname.includes('/api/') ||
+        PUBLIC_FILE.test(request.nextUrl.pathname)
+    ) {
+        return
+    }
     // Check if there is any supported locale in the pathname
     const pathname = request.nextUrl.pathname
     const pathnameIsMissingLocale = locales.every(

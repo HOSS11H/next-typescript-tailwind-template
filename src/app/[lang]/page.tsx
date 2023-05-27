@@ -19,7 +19,7 @@ export default async function Home({ params: { lang } }) {
           >
             By{' '}
             <Image
-              src="../../../public/vercel.svg"
+              src="/vercel.svg"
               alt="Vercel Logo"
               className="dark:invert"
               width={100}
