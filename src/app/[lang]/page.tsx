@@ -1,6 +1,8 @@
 import Image from 'next/image'
+import { getDictionary } from './dictionaries';
 
-export default function Home() {
+export default async function Home({ params: { lang } }) {
+  const dict = await getDictionary(lang); // en
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -17,7 +19,7 @@ export default function Home() {
           >
             By{' '}
             <Image
-              src="/vercel.svg"
+              src="../../../public/vercel.svg"
               alt="Vercel Logo"
               className="dark:invert"
               width={100}
