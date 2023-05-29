@@ -1,6 +1,7 @@
 import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from "next/server";
 
 let headers = { 'accept-language': 'en-US,en;q=0.5' };
 let languages = new Negotiator({ headers }).languages();
@@ -10,12 +11,12 @@ let defaultLocale = 'en-US';
 const PUBLIC_FILE = /\.(.*)$/
 
 // Get the preferred locale, similar to above or using a library
-function getLocale(request) {
+function getLocale(request: NextRequest) {
     return match(languages, locales, defaultLocale);
 }
 
 
-export function middleware(request) {
+export function middleware(request: NextRequest) {
     // Skip next internal and image requests
     if (
         request.nextUrl.pathname.startsWith('/_next') ||
