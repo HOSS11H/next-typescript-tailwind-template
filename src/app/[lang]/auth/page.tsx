@@ -13,7 +13,8 @@ import AuthForm from './components/AuthForm';
 
 import { signIn } from 'next-auth/react';
 
-export default function Auth() {
+export default async function Auth() {
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="container">
