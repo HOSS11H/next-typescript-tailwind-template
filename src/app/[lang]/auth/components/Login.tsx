@@ -2,57 +2,41 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { formSchema } from '../formSchema';
-import * as z from "zod"
-
-import { Input } from '@/app/[lang]/components/UI/input';
+import * as z from 'zod';
+import { loginSchema } from '../formSchema';
 
 import { Button } from '@/app/[lang]/components/UI/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/app/[lang]/components/UI/form';
+import { Input } from '@/app/[lang]/components/UI/input';
 
-const AuthForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+
+const Login = ({toggleVariant} : {toggleVariant: () => void}) => {
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+    criteriaMode: 'all',
     defaultValues: {
-      username: '',
       email: '',
       password: '',
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const { isValid } = form.formState;
+
+  function onSubmit(values: z.infer<typeof loginSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-2">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+      <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <FormField
             control={form.control}
@@ -61,7 +45,7 @@ const AuthForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="admin@example.com" {...field} />
+                  <Input required placeholder="admin@example.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,18 +60,34 @@ const AuthForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="********" {...field} type="password" />
+                  <Input
+                    required
+                    placeholder="********"
+                    {...field}
+                    type="password"
+                  />
                 </FormControl>
                 <FormMessage />
-              </FormItem>
+              </FormItem> 
             )}
           />
         </div>
-        <div className='pt-6 '>
-          <Button  className='w-full' type="submit">Create account</Button>
+        <div className="pt-6 ">
+          <Button disabled={!isValid} className="w-full" type="submit">
+            Sign In
+          </Button>
         </div>
       </form>
+      <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
+        <div>
+          New to Events?
+        </div>
+        <div onClick={toggleVariant} className="underline cursor-pointer">
+          Create an account
+        </div>
+      </div>
     </Form>
   );
 };
-export default AuthForm;
+
+export default Login

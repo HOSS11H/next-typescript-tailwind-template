@@ -5,14 +5,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/app/[lang]/components/UI/card"
-import { Input } from "@/app/[lang]/components/UI/input"
-import { Label } from "@/app/[lang]/components/UI/label"
 import { Icons } from "@/app/[lang]/components/UI/icons"
-import AuthForm from "./AuthForm/AuthForm"
+import AuthForm from "./components/AuthForm"
 
 export default function Auth() {
   return (
