@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { loginSchema } from '../formSchema';
 
+import { signIn } from 'next-auth/react';
+
 import { Button } from '@/app/[lang]/components/UI/button';
 import {
   Form,
@@ -15,9 +17,17 @@ import {
   FormMessage,
 } from '@/app/[lang]/components/UI/form';
 import { Input } from '@/app/[lang]/components/UI/input';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 
 const Login = ({toggleVariant} : {toggleVariant: () => void}) => {
+
+  const router = useRouter()
+
+  const [ submitting, setSubmitting ] = useState(false)
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     mode: 'onChange',
@@ -32,7 +42,27 @@ const Login = ({toggleVariant} : {toggleVariant: () => void}) => {
   function onSubmit(values: z.infer<typeof loginSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    setSubmitting(true)
+    signIn('credentials', {
+      ...values,
+      redirect: false,
+    }).then((callback) => {
+      setSubmitting(false);
+      if (callback?.ok && !callback?.error) {
+        router.replace('/')
+        toast.success('Logged in');
+        // router.refresh();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    }).catch(error => {
+      toast.error('Something went wrong')
+    })
+    .finally(() => {
+      setSubmitting(false);
+    });
   }
   return (
     <Form {...form}>
@@ -73,7 +103,7 @@ const Login = ({toggleVariant} : {toggleVariant: () => void}) => {
           />
         </div>
         <div className="pt-6 ">
-          <Button disabled={!isValid} className="w-full" type="submit">
+          <Button disabled={!isValid || submitting} className="w-full" type="submit">
             Sign In
           </Button>
         </div>

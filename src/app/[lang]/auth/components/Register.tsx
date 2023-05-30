@@ -5,6 +5,10 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { registerSchema } from '../formSchema';
 
+import { signIn } from 'next-auth/react';
+
+import axios from 'axios';
+
 import { Button } from '@/app/[lang]/components/UI/button';
 import {
   Form,
@@ -15,8 +19,16 @@ import {
   FormMessage,
 } from '@/app/[lang]/components/UI/form';
 import { Input } from '@/app/[lang]/components/UI/input';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Register = ({toggleVariant} : {toggleVariant: () => void}) => {
+
+  const router = useRouter()
+
+  const [ submitting, setSubmitting ] = useState(false)
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     mode: 'onChange',
@@ -32,7 +44,30 @@ const Register = ({toggleVariant} : {toggleVariant: () => void}) => {
   function onSubmit(values: z.infer<typeof registerSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    setSubmitting(true);
+    axios
+      .post('/api/register', values)
+      .then(() => signIn('credentials', {
+          ...values,
+          redirect: false,
+        })
+      )
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error('Invalid credentials!');
+        }
+
+        if (callback?.ok) {
+          toast.success('Registered!');
+          router.push('/')
+        }
+      })
+      .catch((error) => {
+        toast.error(error.response.data);
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   }
   return (
     <Form {...form}>
@@ -91,7 +126,7 @@ const Register = ({toggleVariant} : {toggleVariant: () => void}) => {
           />
         </div>
         <div className="pt-6 ">
-          <Button disabled={!isValid} className="w-full" type="submit">
+          <Button disabled={!isValid || submitting} className="w-full" type="submit">
             Creat Account
           </Button>
         </div>

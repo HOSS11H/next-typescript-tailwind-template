@@ -2,6 +2,10 @@ import '@/app/[lang]/styles/globals.css';
 import { Inter } from 'next/font/google';
 import ToasterProvider from './providers/ToasterProvider';
 import ModalsProvider from './providers/ModalsProvider';
+import { ThemeContextProvider } from './context/theme-context';
+
+import dynamic from 'next/dynamic';
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ModalsProvider />
         <ToasterProvider />
-        {children}
+        <ThemeContextProvider>{children}</ThemeContextProvider>
       </body>
     </html>
   );

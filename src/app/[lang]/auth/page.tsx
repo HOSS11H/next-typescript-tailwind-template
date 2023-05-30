@@ -1,21 +1,23 @@
-"use client"
+'use client';
 
-import { Button } from "@/app/[lang]/components/UI/button"
+import { Button } from '@/app/[lang]/components/UI/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@/app/[lang]/components/UI/card"
-import { Icons } from "@/app/[lang]/components/UI/icons"
-import AuthForm from "./components/AuthForm"
+  CardTitle,
+} from '@/app/[lang]/components/UI/card';
+import { Icons } from '@/app/[lang]/components/UI/icons';
+import AuthForm from './components/AuthForm';
+
+import { signIn } from 'next-auth/react';
 
 export default function Auth() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className='container' >
-        <Card className="max-w-lg  mx-auto" >
+      <div className="container">
+        <Card className="max-w-lg  mx-auto">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl">Create an account</CardTitle>
             <CardDescription>
@@ -24,11 +26,11 @@ export default function Auth() {
           </CardHeader>
           <CardContent className="grid gap-4">
             <div className="grid grid-cols-2 gap-6">
-              <Button variant="outline">
+              <Button variant="outline" onClick={() => signIn('github')}>
                 <Icons.gitHub className="mr-2 h-4 w-4" />
                 Github
               </Button>
-              <Button variant="outline">
+              <Button variant="outline" onClick={() => signIn('google')}>
                 <Icons.google className="mr-2 h-4 w-4" />
                 Google
               </Button>
@@ -48,5 +50,5 @@ export default function Auth() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

@@ -3,6 +3,8 @@ import Negotiator from 'negotiator';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from "next/server";
 
+import { withAuth } from 'next-auth/middleware'
+
 let headers = { 'accept-language': 'en-US,en;q=0.5' };
 let languages = new Negotiator({ headers }).languages();
 let locales = ['en-US', 'en', 'ar'];
@@ -43,11 +45,19 @@ export function middleware(request: NextRequest) {
     }
 }
 
+/* export default withAuth({
+    pages: {
+        signIn: '/auth',
+    }
+}) */
+
 export const config = {
     matcher: [
         // Skip all internal paths (_next)
         '/((?!_next).*)',
         // Optional: only run on root (/) URL
         // '/'
+        // Apply for protected routes
+        //'/profile/:path*'
     ],
 }
