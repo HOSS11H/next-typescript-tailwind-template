@@ -42,6 +42,7 @@ import {
 import { useSession, signOut } from "next-auth/react";
 import { SafeUser } from '@/@types';
 
+import { useTheme } from 'next-themes'
 
 interface MenuProps {
   currentUser: SafeUser | null
@@ -50,8 +51,10 @@ interface MenuProps {
 
 const Menu : React.FC<MenuProps> = ({currentUser} ) => {
 
+  const { theme, setTheme } = useTheme()
+  console.log(theme)
+
   const {data, status} = useSession()
-  console.log(currentUser, data, status)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

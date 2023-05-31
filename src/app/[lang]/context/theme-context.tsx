@@ -7,10 +7,8 @@ import { useLocalStorage } from 'usehooks-ts';
 interface ThemeType {}
 
 interface ThemeContextProps {
-    mode:  'light' | 'dark';
     direction: 'rtl' | 'ltr';
     lang: string;
-    toggleMode: () => void;
     toggleDirection: () => void;
     toggleLanguage: () => void;
     changeLanguage: (lang: string, dir: 'rtl' | 'ltr') => void;
@@ -18,10 +16,8 @@ interface ThemeContextProps {
 }
 
 const ThemeContext = React.createContext<ThemeContextProps>({
-    mode: "light",
     direction: "ltr",
     lang: "en",
-    toggleMode: () => { },
     toggleDirection: () => { },
     toggleLanguage: () => { },
     changeLanguage: () => { },
@@ -31,31 +27,11 @@ const ThemeContext = React.createContext<ThemeContextProps>({
 
 export const ThemeContextProvider = ({children} : { children: React.ReactNode}) => {
 
-    let prefersDarkMode= true
-    /* if (typeof window !== undefined) {
-        prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    } */
-
-
-    const [mode, setMode] = useLocalStorage<'light' | 'dark'>('mode', prefersDarkMode ? 'dark' : 'light');
     const [direction, setDirection] = useLocalStorage<'ltr' | 'rtl' >('direction', 'ltr');
     const [language, setLanguage] = useLocalStorage<string>('language', 'en');
 
-    // document.documentElement.classList.add(mode)
     // document.getElementsByTagName("body")[0].dir = direction;
 
-    const toggleModeHandler = () => {
-        setMode((prevState) => {
-            if (prevState === 'dark') {
-                document.documentElement.classList.remove('dark')
-                document.documentElement.classList.add('light')
-                return 'light'
-            }
-            document.documentElement.classList.remove('light')
-            document.documentElement.classList.add('dark')
-            return 'dark'
-        } );
-    };
     const toggleDirectionHandler = () => {
         setDirection((prevState) => prevState === "ltr" ? "rtl" : "ltr");
         setLanguage((prevState) => prevState === "en" ? "ar" : "en"); 
@@ -94,10 +70,8 @@ export const ThemeContextProvider = ({children} : { children: React.ReactNode}) 
     ); */
 
     const contextValue = {
-        mode: mode,
         direction: direction,
         lang: language,
-        toggleMode: toggleModeHandler,
         toggleDirection: toggleDirectionHandler,
         toggleLanguage: toggleLanguageHandler,
         changeLanguage: changeLanguageHandler,

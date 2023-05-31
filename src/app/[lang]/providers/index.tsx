@@ -1,6 +1,7 @@
 'use client';
 
 import { ThemeContextProvider } from '../context/theme-context';
+import { ThemeProvider } from 'next-themes'
 import ModalsProvider from './ModalsProvider';
 import ToasterProvider from './ToasterProvider';
 
@@ -13,7 +14,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       <ModalsProvider />
       <ToasterProvider />
       <SessionProvider>
+        <ThemeProvider attribute="class" >
           <ThemeContextProvider>{children}</ThemeContextProvider>
+        </ThemeProvider>
       </SessionProvider>
     </>
   );
