@@ -9,6 +9,7 @@ import getCurrentUser from './actions/getCurrentUser';
 import Header from './components/Header/Header';
 
 import { SessionProvider } from 'next-auth/react';
+import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,19 +24,16 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const currentUser = await getCurrentUser();
-  console.log(currentUser)
+  console.log(currentUser);
 
   return (
     <html lang={params.lang}>
       <body className={inter.className}>
-          <ModalsProvider />
-          <ToasterProvider />
-          <ThemeContextProvider>
-            <Header />
-            {children}
-            </ThemeContextProvider>
+        <Providers>
+          <Header currentUser={currentUser} />
+          {children}
+        </Providers>
       </body>
     </html>
   );

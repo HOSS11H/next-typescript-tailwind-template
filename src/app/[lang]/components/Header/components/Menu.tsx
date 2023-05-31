@@ -38,16 +38,20 @@ import {
   AvatarImage,
 } from '@/app/[lang]/components/UI/avatar';
 
-import { getSession, signOut } from "next-auth/react";
+
+import { useSession, signOut } from "next-auth/react";
+import { SafeUser } from '@/@types';
 
 
+interface MenuProps {
+  currentUser: SafeUser | null
+}
 
 
-export default async function Menu() {
+const Menu : React.FC<MenuProps> = ({currentUser} ) => {
 
-  const session = await getSession()
-  console.log(session)
-
+  const {data, status} = useSession()
+  console.log(currentUser, data, status)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -139,3 +143,5 @@ export default async function Menu() {
     </DropdownMenu>
   );
 }
+
+export default  Menu
