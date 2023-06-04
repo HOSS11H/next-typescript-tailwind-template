@@ -23,7 +23,7 @@ export default async function Home({ params: { lang } }) {
               alt="Vercel Logo"
               className="dark:invert"
               width={100}
-              height={24}
+              height={22.61}
               priority
             />
           </a>

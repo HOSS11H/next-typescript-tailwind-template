@@ -51,7 +51,6 @@ export const ThemeContextProvider = ({children} : { children: React.ReactNode}) 
 
     const changeLanguageHandler = (lang : string , dir : 'rtl' | 'ltr' ) => {
         setDirection(dir);
-        // i18n.changeLanguage(lang);
         setLanguage(lang);
     };
 

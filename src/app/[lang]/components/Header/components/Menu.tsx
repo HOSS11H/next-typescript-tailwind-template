@@ -39,10 +39,11 @@ import {
 } from '@/app/[lang]/components/UI/avatar';
 
 
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { SafeUser } from '@/@types';
 
 import { useTheme } from 'next-themes'
+import { useRouter } from 'next/navigation';
 
 interface MenuProps {
   currentUser: SafeUser | null
@@ -50,17 +51,33 @@ interface MenuProps {
 
 
 const Menu : React.FC<MenuProps> = ({currentUser} ) => {
-
-  const { theme, setTheme } = useTheme()
-  console.log(theme)
-
-  const {data, status} = useSession()
+  console.log(currentUser)
+  const router = useRouter()
+  if (!currentUser) {
+    return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+          <Avatar>
+            <AvatarImage src='/images/placeholder.jpg' alt="@shadcn" />
+            <AvatarFallback>Sc</AvatarFallback>
+          </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuItem onClick={() => router.push('/auth')}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Log In</span>
+          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    )
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={currentUser?.image! } alt="@shadcn" />
+            <AvatarFallback>{currentUser?.name?.slice(0, 2).toLocaleUpperCase()}</AvatarFallback>
           </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
