@@ -76,7 +76,7 @@ const Menu : React.FC<MenuProps> = ({currentUser} ) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
           <Avatar>
-            <AvatarImage src={currentUser?.image! } alt="@shadcn" />
+            <AvatarImage src={currentUser?.image || '/images/placeholder.jpg' } alt="@shadcn" />
             <AvatarFallback>{currentUser?.name?.slice(0, 2).toLocaleUpperCase()}</AvatarFallback>
           </Avatar>
       </DropdownMenuTrigger>
@@ -84,7 +84,7 @@ const Menu : React.FC<MenuProps> = ({currentUser} ) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push('/profile')} >
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
