@@ -46,7 +46,6 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.0",
     "prisma": "^4.14.1"
   }
