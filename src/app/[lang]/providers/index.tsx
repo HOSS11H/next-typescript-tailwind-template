@@ -1,11 +1,11 @@
 'use client';
 
-import { ThemeContextProvider } from '../context/theme-context';
+import { ThemeContextProvider } from '../context/ThemeContext';
 import { ThemeProvider } from 'next-themes'
 import ModalsProvider from './ModalsProvider';
 import ToasterProvider from './ToasterProvider';
 
-import { SessionProvider } from "next-auth/react"
+import AuthContext from '../context/AuthContext';
 
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -13,11 +13,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     <>
       <ModalsProvider />
       <ToasterProvider />
-      <SessionProvider>
+      <AuthContext>
         <ThemeProvider attribute="class" >
           <ThemeContextProvider>{children}</ThemeContextProvider>
         </ThemeProvider>
-      </SessionProvider>
+      </AuthContext>
     </>
   );
 };

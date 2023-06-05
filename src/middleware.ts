@@ -17,6 +17,54 @@ function getLocale(request: NextRequest) {
     return match(languages, locales, defaultLocale);
 }
 
+/* export default withAuth(
+    async function middleware(request) {
+      // Skip next internal and image requests
+        if (
+            request.nextUrl.pathname.startsWith('/_next') ||
+            request.nextUrl.pathname.includes('/api/') ||
+            PUBLIC_FILE.test(request.nextUrl.pathname)
+        ) {
+            return NextResponse.next();
+        } 
+        const pathname = request.nextUrl.pathname
+        const pathnameIsMissingLocale = locales.every(
+            (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+        )
+
+        const token = await getToken({ request })
+        const isAuth = !!token
+        const isAuthPage = pathname.startsWith("/auth")
+
+        // Redirect if there is no locale
+        if (pathnameIsMissingLocale) {
+            const locale = getLocale(request)
+
+            if (isAuthPage) {
+                if (isAuth) {
+                    return NextResponse.redirect(
+                        new URL(`/${locale}/`, request.url)
+                    )
+                }
+                return null
+            }
+
+            if (!isAuth) {
+                let from = request.nextUrl.pathname;
+                if (request.nextUrl.search) {
+                    from += request.nextUrl.search;
+                }
+
+                return NextResponse.redirect(
+                    new URL(`/login?from=${encodeURIComponent(from)}`, request.url)
+                );
+            }
+
+
+        }
+    }
+) */
+
 
 export function middleware(request: NextRequest) {
     // Skip next internal and image requests
@@ -51,12 +99,21 @@ export function middleware(request: NextRequest) {
     }
 }) */
 
+
 export const config = {
     matcher: [
         // Skip all internal paths (_next)
         '/((?!_next).*)',
         // Optional: only run on root (/) URL
         // '/'
+        /*
+        * Match all request paths except for the ones starting with:
+        * - api (API routes)
+        * - _next/static (static files)
+        * - _next/image (image optimization files)
+        * - favicon.ico (favicon file)
+        */
+        '/((?!api|_next/static|_next/image|favicon.ico).*)',
         // Apply for protected routes
         //'/profile/:path*'
     ],

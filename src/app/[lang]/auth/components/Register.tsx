@@ -19,11 +19,18 @@ import {
   FormMessage,
 } from '@/app/[lang]/components/UI/form';
 import { Input } from '@/app/[lang]/components/UI/input';
+
 import { toast } from 'react-toastify';
+
 import { useState } from 'react';
+
 import { useRouter } from 'next/navigation';
+import { useSession } from "next-auth/react"
+
 
 const Register = ({toggleVariant} : {toggleVariant: () => void}) => {
+
+  const { update } = useSession()
 
   const router = useRouter()
 
@@ -59,6 +66,7 @@ const Register = ({toggleVariant} : {toggleVariant: () => void}) => {
 
         if (callback?.ok) {
           toast.success('Registered!');
+          update()
           router.push('/')
         }
       })
