@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { getDictionary } from './dictionaries';
 
-export default async function Home({ params: { lang } }) {
+export default async function Home({ params: { lang } } : {params : { lang : string | undefined }} ) {
   const dict = await getDictionary(lang); // en
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
