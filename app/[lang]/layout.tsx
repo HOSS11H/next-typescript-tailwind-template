@@ -52,7 +52,7 @@ export const metadata = {
     shortcut: "/icons/favicon-16x16.png",
     apple: "/icons/apple-touch-icon.png",
   },
-  manifest: `/site.webmanifest`,
+  manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export default async function RootLayout({
