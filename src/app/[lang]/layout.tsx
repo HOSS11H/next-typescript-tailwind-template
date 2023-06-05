@@ -60,6 +60,7 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
+  params: { lang: string }
 }) {
   const currentUser = await getCurrentUser();
 
