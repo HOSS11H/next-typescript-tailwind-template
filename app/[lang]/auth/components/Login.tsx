@@ -21,8 +21,12 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
+interface LoginProps {
+  lang: string | undefined;
+  toggleVariant: () => void
+}
 
-const Login = ({toggleVariant} : {toggleVariant: () => void}) => {
+const Login = ({toggleVariant, lang} : LoginProps) => {
 
   const router = useRouter()
 
@@ -45,13 +49,11 @@ const Login = ({toggleVariant} : {toggleVariant: () => void}) => {
     setSubmitting(true)
     signIn('credentials', {
       ...values,
-      redirect: false,
+      callbackUrl: `/${lang}/`,
     }).then((callback) => {
       setSubmitting(false);
       if (callback?.ok && !callback?.error) {
-        router.replace('/')
         toast.success('Logged in');
-        // router.refresh();
       }
 
       if (callback?.error) {

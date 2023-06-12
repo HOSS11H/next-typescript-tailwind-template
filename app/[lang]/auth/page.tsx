@@ -13,7 +13,7 @@ import AuthForm from './components/AuthForm';
 
 import { signIn } from 'next-auth/react';
 
-export default async function Auth() {
+export default async function Auth({params: { lang }} : { params : { lang : string | undefined }} ) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -46,7 +46,7 @@ export default async function Auth() {
                 </span>
               </div>
             </div>
-            <AuthForm />
+            <AuthForm lang={lang} />
           </CardContent>
         </Card>
       </div>

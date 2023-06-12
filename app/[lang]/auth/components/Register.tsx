@@ -27,8 +27,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react"
 
+interface RegisterProps {
+  lang: string | undefined;
+  toggleVariant: () => void
+}
 
-const Register = ({toggleVariant} : {toggleVariant: () => void}) => {
+
+const Register = ({toggleVariant, lang} : RegisterProps) => {
 
   const { update } = useSession()
 

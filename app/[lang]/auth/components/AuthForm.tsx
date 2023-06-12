@@ -6,7 +6,11 @@ import Register from './Register';
 
 type Variant = 'LOGIN' | 'REGISTER';
 
-const AuthForm = () => {
+interface AuthFormProps {
+  lang: string | undefined
+}
+
+const AuthForm = ({lang} : AuthFormProps) => {
   const [variant, setVariant] = useState<Variant>('REGISTER');
 
   const toggleVariant = useCallback(() => {
@@ -17,7 +21,7 @@ const AuthForm = () => {
     }
   }, [variant]);
 
-  return variant === 'LOGIN' ? <Login toggleVariant={toggleVariant} /> : <Register toggleVariant={toggleVariant} />
+  return variant === 'LOGIN' ? <Login lang={lang} toggleVariant={toggleVariant} /> : <Register lang={lang} toggleVariant={toggleVariant} />
 };
 
 export default AuthForm;
