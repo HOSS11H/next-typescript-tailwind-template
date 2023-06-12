@@ -23,21 +23,6 @@ function getLocale(request: NextRequest) {
     return match(languages, locales, defaultLocale);
 }
 
-function redirectHandler(request: NextRequest, pathname: string, route: string) {
-    const pathnameIsMissingLocale = locales.every(
-        (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-    )
-    if (pathnameIsMissingLocale) {
-        const locale = getLocale(request)
-        return NextResponse.redirect(
-            new URL(`/${locale}${route}`, request.url)
-        )
-    }
-    return NextResponse.redirect(
-        new URL(`${route}`, request.url)
-    )
-}
-
 export default withAuth(
     async function middleware(request) {
         const pathname = request.nextUrl.pathname
