@@ -112,6 +112,7 @@ export default withAuth(
                 new URL(`/${locale}/${pathname}`, request.url)
             )
         }
+        return NextResponse.next();
     },
     {
         callbacks: {
