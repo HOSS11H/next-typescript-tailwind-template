@@ -83,7 +83,7 @@ export default withAuth(
                 )
             }
             return NextResponse.redirect(
-                new URL(`/${locale}/auth?from=${encodeURIComponent(from)}`, request.url)
+                new URL(`/auth?from=${encodeURIComponent(from)}`, request.url)
             )
         }
         /* if (isAuthPage) {
