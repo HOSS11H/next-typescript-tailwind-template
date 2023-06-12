@@ -51,12 +51,41 @@ export default withAuth(
             return NextResponse.next();
         }
 
+        const pathnameIsMissingLocale = locales.every(
+            (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+        )
+        const locale = getLocale(request)
+
         const token = await getToken({ req: request })
         const isAuth = !!token
         const isAuthPage = pathname.includes("/auth")
         const isProtectedPage = protectedRoutesRegExp.test(pathname)
 
-
+        if (isAuthPage && isAuth) {
+            if (pathnameIsMissingLocale) {
+                return NextResponse.redirect(
+                    new URL(`/${locale}/`, request.url)
+                )
+            }
+            return NextResponse.redirect(
+                new URL(`/${locale}/`, request.url)
+            )
+        }
+        if (isProtectedPage && !isAuth) {
+            // determine current page 
+            let from = request.nextUrl.pathname;
+            if (request.nextUrl.search) {
+                from += request.nextUrl.search;
+            }
+            if (pathnameIsMissingLocale) {
+                return NextResponse.redirect(
+                    new URL(`/${locale}/auth?from=${encodeURIComponent(from)}`, request.url)
+                )
+            }
+            return NextResponse.redirect(
+                new URL(`/${locale}/auth?from=${encodeURIComponent(from)}`, request.url)
+            )
+        }
         /* if (isAuthPage) {
             if (isAuth) {
                 redirectHandler(request, pathname, '/')
@@ -77,7 +106,12 @@ export default withAuth(
         } */
 
         // Redirect if there is no locale and a public page
-        redirectHandler(request, pathname, pathname)
+        // redirectHandler(request, pathname, pathname)
+        if (pathnameIsMissingLocale) {
+            return NextResponse.redirect(
+                new URL(`/${locale}/${pathname}`, request.url)
+            )
+        }
     },
     {
         callbacks: {
