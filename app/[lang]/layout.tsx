@@ -68,7 +68,7 @@ export default async function RootLayout({
     <html lang={params.lang}>
       <body className={inter.className}>
         <Providers>
-          <Header currentUser={currentUser} />
+          <Header  lang={params.lang} currentUser={currentUser} />
           {children}
         </Providers>
       </body>
