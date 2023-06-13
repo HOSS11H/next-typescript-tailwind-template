@@ -17,7 +17,7 @@ const Header : React.FC<HeaderProps> = ({currentUser, lang} ) => {
                 </Link>
                 <div className="flex gap-6 items-center" >
                     <ModeToggle />
-                    <Menu  currentUser={currentUser} />
+                    <Menu lang={lang} currentUser={currentUser} />
                 </div>
             </div>
         </div>

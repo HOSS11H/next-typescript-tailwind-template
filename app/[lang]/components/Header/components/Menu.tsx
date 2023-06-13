@@ -47,11 +47,12 @@ import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react"
 
 interface MenuProps {
-  currentUser: SafeUser | null
+  currentUser: SafeUser | null;
+  lang: string | undefined
 }
 
 
-const Menu : React.FC<MenuProps> = ({currentUser} ) => {
+const Menu : React.FC<MenuProps> = ({currentUser, lang} ) => {
   const router = useRouter()
   
   const { data, status } = useSession()
@@ -87,7 +88,7 @@ const Menu : React.FC<MenuProps> = ({currentUser} ) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push('/profile')} >
+          <DropdownMenuItem onClick={() => router.push(`/${lang}/profile`)} >
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

@@ -62,6 +62,7 @@ export default withAuth(
             if (request.nextUrl.search) {
                 from += request.nextUrl.search;
             }
+            console.log('protected')
             if (pathnameIsMissingLocale) {
                 return NextResponse.redirect(
                     new URL(`/${locale}/auth?from=${encodeURIComponent(from)}`, request.url)
