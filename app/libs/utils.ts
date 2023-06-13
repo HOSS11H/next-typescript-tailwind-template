@@ -7,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export function generateRegExpFromRoutes(routes: string[]) {
   const escapedRoutes = routes.map(route => route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const regExpRoutes = escapedRoutes.map(route => route.replace(/\/:\w+/g, '\/([^/]+)'));
+  const regExpRoutes = escapedRoutes.map(route => route.replace(/\/:\w+/g, '/([^/]+)'));
   const pattern = regExpRoutes.join('|');
-  const finalPattern = `^((${pattern})\/.*)$`; // Modified pattern to allow additional path segments
+  const finalPattern = `^((${pattern})(\/.*)?)$`;
   return new RegExp(finalPattern);
 }
