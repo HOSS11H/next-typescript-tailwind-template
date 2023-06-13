@@ -45,6 +45,7 @@ export default withAuth(
         const isAuth = !!token
         const isAuthPage = pathname.includes("/auth")
         const isProtectedPage = testPathAgainstRegExp(pathname, protectedRoutesRegExp)
+        console.log(protectedRoutesRegExp, pathname, isProtectedPage )
 
         if (isAuthPage && isAuth) {
             if (pathnameIsMissingLocale) {
