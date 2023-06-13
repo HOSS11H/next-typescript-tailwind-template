@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt"
 
 import { withAuth } from 'next-auth/middleware'
-import { generateRegExpFromRoutes } from './app/libs/utils';
+import { generateRegExpFromPaths, testPathAgainstRegExp } from '@/app/libs/utils';
 
 let headers = { 'accept-language': 'en-US,en;q=0.5' };
 let languages = new Negotiator({ headers }).languages();
@@ -15,7 +15,7 @@ let defaultLocale = 'en-US';
 const PUBLIC_FILE = /\.(.*)$/
 
 const PROTECTED_ROUTES = ['/profile/:path', '/users'];
-const protectedRoutesRegExp = generateRegExpFromRoutes(PROTECTED_ROUTES);
+const protectedRoutesRegExp = generateRegExpFromPaths(PROTECTED_ROUTES);
 
 
 // Get the preferred locale, similar to above or using a library
@@ -44,7 +44,7 @@ export default withAuth(
         const token = await getToken({ req: request })
         const isAuth = !!token
         const isAuthPage = pathname.includes("/auth")
-        const isProtectedPage = protectedRoutesRegExp.test(pathname)
+        const isProtectedPage = testPathAgainstRegExp(pathname, protectedRoutesRegExp)
 
         if (isAuthPage && isAuth) {
             if (pathnameIsMissingLocale) {

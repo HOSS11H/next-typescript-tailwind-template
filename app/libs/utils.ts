@@ -5,9 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function generateRegExpFromRoutes(routes: string[]) {
-  const escapedRoutes = routes.map(route => route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const pattern = escapedRoutes.join('|');
+export function generateRegExpFromPaths(paths: string[]) {
+  const escapedPaths = paths.map(path => path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const pattern = escapedPaths.join('|');
   const finalPattern = `^(?:${pattern})$`;
   return new RegExp(finalPattern);
+}
+
+export function testPathAgainstRegExp(path: string, regExp: RegExp) {
+  const partialMatchRegExp = new RegExp(regExp.source + '|^' + regExp.source + '(.*)');
+  return partialMatchRegExp.test(path);
 }
