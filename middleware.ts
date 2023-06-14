@@ -14,14 +14,29 @@ let defaultLocale = 'en-US';
 
 const PUBLIC_FILE = /\.(.*)$/
 
-const PROTECTED_ROUTES = ['/profile/:path', '/users'];
-const protectedRoutesRegExp = generateRegExpFromPaths(PROTECTED_ROUTES);
+const PROTECTED_ROUTES = ['/profile', '/users'];
+// const protectedRoutesRegExp = generateRegExpFromPaths(PROTECTED_ROUTES);
 
 
 // Get the preferred locale, similar to above or using a library
 function getLocale(request: NextRequest) {
     return match(languages, locales, defaultLocale);
 }
+
+/* const protect = ["profile", "users"];
+
+const isProtected = (path: string) => {
+    const pathArray = path.replace(/^\/|\/$/g, "").split("/");
+    let _isProtected = false;
+    for (const protectedItem of protect) {
+        if (pathArray.includes(protectedItem)) {
+            _isProtected = true;
+        }
+    }
+    console.log(_isProtected);
+    return _isProtected;
+}; */
+
 
 export default withAuth(
     async function middleware(request) {
@@ -44,8 +59,9 @@ export default withAuth(
         const token = await getToken({ req: request })
         const isAuth = !!token
         const isAuthPage = pathname.includes("/auth")
-        const isProtectedPage = testPathAgainstRegExp(pathname, protectedRoutesRegExp)
-        console.log(protectedRoutesRegExp, pathname, isProtectedPage )
+        const isProtectedPage = PROTECTED_ROUTES.some((item : string) => pathname.includes(item) )
+        // const isProtectedPage = isProtected(pathname);
+        
 
         if (isAuthPage && isAuth) {
             if (pathnameIsMissingLocale) {
@@ -63,7 +79,6 @@ export default withAuth(
             if (request.nextUrl.search) {
                 from += request.nextUrl.search;
             }
-            console.log('protected')
             if (pathnameIsMissingLocale) {
                 return NextResponse.redirect(
                     new URL(`/${locale}/auth?from=${encodeURIComponent(from)}`, request.url)
@@ -73,24 +88,6 @@ export default withAuth(
                 new URL(`/auth?from=${encodeURIComponent(from)}`, request.url)
             )
         }
-        /* if (isAuthPage) {
-            if (isAuth) {
-                redirectHandler(request, pathname, '/')
-                return;
-            }
-            redirectHandler(request, pathname, pathname)
-            return;
-        }
-        if (isProtectedPage && !isAuth) {
-            // determine current page 
-            let from = request.nextUrl.pathname;
-            if (request.nextUrl.search) {
-                from += request.nextUrl.search;
-            }
-            // adding current page to search params upon redirecting to Auth page
-            redirectHandler(request, pathname, `/auth?from=${encodeURIComponent(from)}`)
-            return;
-        } */
 
         // Redirect if there is no locale and a public page
         // redirectHandler(request, pathname, pathname)

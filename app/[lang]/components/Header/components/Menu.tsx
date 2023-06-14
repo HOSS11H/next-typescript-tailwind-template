@@ -44,8 +44,6 @@ import { SafeUser } from '@/@types';
 
 import { useRouter } from 'next/navigation';
 
-import { useSession } from "next-auth/react"
-
 interface MenuProps {
   currentUser: SafeUser | null;
   lang: string | undefined
@@ -55,9 +53,9 @@ interface MenuProps {
 const Menu : React.FC<MenuProps> = ({currentUser, lang} ) => {
   const router = useRouter()
   
-  const { data, status } = useSession()
+  console.log(currentUser)
 
-  if (!data && ( status === 'loading') || status === 'unauthenticated'  ) {
+  if (!currentUser ) {
     return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
